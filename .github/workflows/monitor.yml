@@ -21,10 +21,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-
-      - name: Install dependencies
+           
+      - name: Test Telegram
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
         run: |
-          pip install feedparser requests
+          python -c "import os,requests; requests.post(f'https://api.telegram.org/bot{os.environ[\"BOT_TOKEN\"]}/sendMessage',data={'chat_id':os.environ['CHAT_ID'],'text':'✅ MangaUpdates Telegram Bot is working!'})"
 
       - name: Check MangaUpdates RSS
         env:
