@@ -22,24 +22,23 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Check MangaUpdates RSS
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: python bot.py
-         
-      - name: Test Telegram
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
+      - name: Install dependencies
         run: |
-          python -c "import os,requests; requests.post(f'https://api.telegram.org/bot{os.environ[\"BOT_TOKEN\"]}/sendMessage',data={'chat_id':os.environ['CHAT_ID'],'text':'✅ MangaUpdates Telegram Bot is working!'})"
+          python -m pip install --upgrade pip
+          pip install feedparser requests
 
       - name: Check MangaUpdates RSS
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: python bot.py
+
+      - name: Test Telegram
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          python -c "import os,requests; requests.post(f'https://api.telegram.org/bot{os.environ[\"BOT_TOKEN\"]}/sendMessage',data={'chat_id':os.environ['CHAT_ID'],'text':'✅ MangaUpdates Telegram Bot is working!'})"
 
       - name: Save seen releases
         run: |
